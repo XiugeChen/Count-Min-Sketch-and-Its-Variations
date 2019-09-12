@@ -2,8 +2,7 @@
 
 // if you edit this file, write your name/login here
 
-public class Morris
-{
+public class Morris {
 	/*
 		You may need to make changes to the primitive data types
 		to get the benefit of a Morris Counter
@@ -11,20 +10,17 @@ public class Morris
 	private int counter;
 	private int power2;
 
-	public void increment()
-	{
+	public void increment() {
 		double r = StdRandom.uniform();
 		double p = Math.pow(2, counter);
 		// double p = power2;
-		if(r < 1/p)
-		{
+		if(r < 1/p) {
 			counter++;
 			power2*=2;
 		}
 	}
 
-	public void increment(int f)
-	{
+	public void increment(int f) {
 		if (f < 0)
 		{
 			System.err.println("Morris counter cannot decrement");
@@ -36,14 +32,12 @@ public class Morris
 		}
 	}
 
-	public Morris()
-	{
+	public Morris() {
 		counter = 0;
 		power2 = 1;
 	}
 
-	public int mycount()
-	{
+	public int mycount() {
 		return power2-1;
 	}
 }

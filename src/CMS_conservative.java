@@ -1,6 +1,8 @@
 // COMP90056 Assignment A 2019s2
 
-// if you edit this file, write your name/login here
+// xiugec 961392
+// Xiuge Chen
+// xiugec@student.unimelb.edu.au
 
 public class CMS_conservative implements CMS {
 	private int width;

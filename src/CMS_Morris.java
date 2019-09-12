@@ -15,6 +15,11 @@ public class CMS_Morris implements CMS {
 		depth = d;
 		h = new Hash[depth];
 		c_morris = new Morris[depth][width];
+		for (int i = 0; i < depth; i++) {
+			for (int j = 0; j < width; j++) {
+				c_morris[i][j] = new Morris();
+			}
+		}
 		
 		for (int j =0; j<depth; ++j) {
 			h[j] = new Hash();
