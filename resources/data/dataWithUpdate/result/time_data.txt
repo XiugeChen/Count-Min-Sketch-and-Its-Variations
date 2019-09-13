@@ -1,0 +1,23 @@
+Time in nanoseconds (1000 times run on space_time_test.txt, constant 100 length)
+sketch,query,update
+CMS_conservative,220.34498585858603,339.01537339999976
+CMS_default,212.4342262626262,201.8307765000003
+CMS_Morris,411.19233636363674,13254.74496060002
+
+Time in nanoseconds (1000 times run on increment_all_max100zipf_s0.4_len1000)
+sketch,query,update
+CMS_conservative,222.62269979716012,456.02132800000004
+CMS_default,270.1196044624747,251.36570999999964
+CMS_Morris,426.22155476673424,13942.270178999988
+
+Time in nanoseconds (1000 times run on increment_pos_max100zipf_s0.4_len1000)
+sketch,query,update
+CMS_conservative,212.7704340000003,474.418311
+CMS_default,222.42595599999967,220.3197180000006
+CMS_Morris,420.30489500000004,13940.94466199999
+
+Time in nanoseconds (1000 times run on constant__max100zipf_s0.4_len1000)
+sketch,query,update
+CMS_conservative,270.6486511627909,468.8902859999996
+CMS_default,231.7839180990898,261.20395799999955
+CMS_Morris,417.16084934277035,13471.906096000028

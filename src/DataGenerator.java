@@ -15,22 +15,21 @@ import org.apache.commons.math3.distribution.ZipfDistribution;
 
 public class DataGenerator {
 	private static String DIC_PATH = "resources/data/";
-	private static int STREAM_LEN = (int) Math.pow(10, 9);
+	private static int STREAM_LEN = (int) Math.pow(10, 4);
 	
 	public static void main(String[] args) {
 		System.out.println("Initialization started");
 		// initialization
 		DataGenerator dataGenerator = new DataGenerator();
-		// double[] zipfS = {0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0};
-		double[] zipfS = {0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0};
+		double[] zipfS = {0.4, 0.8, 1.2};
 		
 		ArrayList<Double> normalStd = new ArrayList<>();
-		for (int i = 2; i < 10; i++) {
+		for (int i = 4; i < 9; i += 2) {
 			normalStd.add(Math.pow(10, i));
 		}
 		
 		ArrayList<Integer> uniqueNumItems = new ArrayList<>();
-		for (int i = 2; i < 10; i++) {
+		for (int i = 4; i < 9; i += 2) {
 			uniqueNumItems.add((int) Math.pow(10, i));
 		}
 		
@@ -41,7 +40,7 @@ public class DataGenerator {
 			dataGenerator.generateZipfData(STREAM_LEN, zipfS[i]);
 		}
 		System.out.println("Data generating finished: zipf");
-			
+		
 		// generate normal
 		for (Double std: normalStd) {
 			dataGenerator.generateNormalData(STREAM_LEN, std);

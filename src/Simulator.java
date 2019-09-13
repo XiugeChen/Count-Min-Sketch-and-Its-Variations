@@ -1,11 +1,19 @@
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.LineNumberReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Simulator {
-	private static final String FILE_PATH = "resources/data/dataWithUpdate/increment_pos_max100zipf_s1.4_len10000.txt";
-	private static final double ERROR = 0.001;
+	private static final String FOLDER = "resources/data/dataWithUpdate/";
+	private static final String FILE_PATH = "resources/data/dataWithUpdate/constant_max100-zipf_s0.6_len1000.txt";
+	private static final double ERROR = 0.01;
 	private static final double BAD_PROB = 0.001;
 	
 	public static void main(String[] args) {
@@ -13,17 +21,41 @@ public class Simulator {
 		int w = (int) Math.round(2.0 / ERROR);
 		int d = (int) Math.round(Math.log(1.0 / BAD_PROB) / Math.log(2));
 		
-		// run all of three cms to measure the performance
-		// runAll(w, d);
+		// loop through all files
+		try (Stream<Path> walk = Files.walk(Paths.get(FOLDER))) {
+			List<String> result = walk.map(x -> x.toString())
+					.filter(f -> f.endsWith(".txt"))
+					.filter(f -> !f.contains("result"))
+					.filter(f -> !f.contains("test"))
+					.collect(Collectors.toList());
+
+			for (String file: result) {
+				// run all of three cms to measure the performance
+				runAll(file, w, d);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		// run specific cms to measure the space
-		CMS cms = new CMS_conservative(d, w);
-		// CMS cms = new CMS_default(d, w);
-		// CMS cms = new CMS_Morris(d, w);
-		runOne(cms, w, d);
+		/*
+		// run specific cms to measure the space and time
+		double[] time = {0.0, 0.0};
+		double[] total_time = {0.0, 0.0};
+		//CMS cms = new CMS_conservative(d, w);
+		//CMS cms = new CMS_default(d, w);
+		CMS cms = new CMS_Morris(d, w);
+		for (int i = 0; i < 1000; i++) {
+			time = runOne(cms, w, d);
+			total_time[0] += time[0];
+			total_time[1] += time[1];
+		}
+		System.out.println("####INFO: Query time: " + (double) total_time[0] / 1000);
+		System.out.println("####INFO: Update time: " + (double) total_time[1] / 1000);
+		*/
 	}
 	
-	private static void runAll(int w, int d) {
+	private static void runAll(String filePath, int w, int d) {
 		int numDistinctItems = 0;
 		
 		CMS_conservative cms_conservative = new CMS_conservative(d, w);
@@ -32,8 +64,9 @@ public class Simulator {
 		System.out.println("####INFO: Initialiazation finished");
 		
 		// updating data
-		try (LineNumberReader fp = new LineNumberReader(new FileReader(new File(FILE_PATH)))) {
-			String output_file = FILE_PATH;
+		try (LineNumberReader fp = new LineNumberReader(new FileReader(new File(filePath)))) {
+			String output_file = filePath;
+			output_file = output_file.replaceAll("dataWithUpdate", "dataWithUpdate/result");
 			output_file = output_file.replaceAll(".txt", "_runningResult_error" 
 					+ ERROR + "_badprob" + BAD_PROB + ".txt");
 			File file = new File(output_file);
@@ -51,14 +84,15 @@ public class Simulator {
             		String[] data = s.split(",");
             		String sample = data[1];
             		int correct_result = Integer.parseInt(data[2]);
+            		String count = data[3];
             		
             		// query items
-            		int result_conservative = cms_conservative.query(sample);
-            		int result_default = cms_default.query(sample);
-            		int result_morris = cms_morris.query(sample);
+            		long result_conservative = cms_conservative.query(sample);
+            		long result_default = cms_default.query(sample);
+            		long result_morris = cms_morris.query(sample);
             		
-            		String output = String.format("sample:%s,correct:%d,conservatice:%d,default:%d,morris:%d\n", 
-            				sample, correct_result, result_conservative, result_default, result_morris);
+            		String output = String.format("sample:%s,count:%s,correct:%d,conservatice:%d,default:%d,morris:%d\n", 
+            				sample, count, correct_result, result_conservative, result_default, result_morris);
             		fw.write(output);
             		
             		numDistinctItems++;
@@ -86,7 +120,12 @@ public class Simulator {
         }
 	}
 	
-	private static void runOne(CMS cms, int w, int d) {
+	private static double[] runOne(CMS cms, int w, int d) {
+		long numQuery = 0;
+		long totalTimeQuery = 0;
+		long numUpdate = 0;
+		long totalTimeUpdate = 0;
+		
 		// updating data
 		try (LineNumberReader fp = new LineNumberReader(new FileReader(new File(FILE_PATH)))) {
             String s;
@@ -101,7 +140,11 @@ public class Simulator {
             		String sample = data[1];
             		
             		// query items
-            		int result = cms.query(sample);
+            		long start = System.nanoTime();
+            		long result = cms.query(sample);
+            		long end = System.nanoTime();
+            		totalTimeQuery += end - start;
+            		numQuery++;
             	}
             	// update sketch
             	else {
@@ -109,15 +152,26 @@ public class Simulator {
             		String sample = data[0];
             		int update = Integer.parseInt(data[1]);
             		
+            		long start = System.nanoTime();
             		cms.update(sample, update);
+            		long end = System.nanoTime();
+            		totalTimeUpdate += end - start;
+            		numUpdate++;
             	}
             }
             System.out.println("####INFO: finishing reading and querying");
             
             fp.close();
             System.out.println("####INFO: end application");
+            
+            double result[] = {0.0, 0.0};
+            result[0] = (double) totalTimeQuery / numQuery;
+            result[1] = (double) totalTimeUpdate / numUpdate;
+            
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 	}
 }

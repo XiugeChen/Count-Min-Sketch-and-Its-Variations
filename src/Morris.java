@@ -1,14 +1,15 @@
 // COMP90056 Assignment A 2019s2
 
-// if you edit this file, write your name/login here
+// xiugec 961392
+// Xiuge Chen
+// xiugec@student.unimelb.edu.au
 
 public class Morris {
 	/*
 		You may need to make changes to the primitive data types
 		to get the benefit of a Morris Counter
 	*/
-	private int counter;
-	private int power2;
+	private byte counter;
 
 	public void increment() {
 		double r = StdRandom.uniform();
@@ -16,28 +17,24 @@ public class Morris {
 		// double p = power2;
 		if(r < 1/p) {
 			counter++;
-			power2*=2;
 		}
 	}
 
 	public void increment(int f) {
-		if (f < 0)
-		{
+		if (f < 0) {
 			System.err.println("Morris counter cannot decrement");
 			System.exit(1);
 		}
-		for (int i=0; i<f; ++i)
-		{
+		for (int i=0; i<f; ++i) {
 			increment();
 		}
 	}
 
 	public Morris() {
 		counter = 0;
-		power2 = 1;
 	}
 
 	public int mycount() {
-		return power2-1;
+		return (int) (Math.pow(2, counter) - 1);
 	}
 }

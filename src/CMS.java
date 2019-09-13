@@ -5,5 +5,5 @@
 public interface CMS
 {
 	public void update(Object o, int freq);
-	public int query(Object o);
+	public long query(Object o);
 }

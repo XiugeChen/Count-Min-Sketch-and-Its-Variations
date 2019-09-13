@@ -34,9 +34,9 @@ public class CMS_Morris implements CMS {
 		}
 	}
 
-	public int query(Object o) {
-		int min = c_morris[0][h[0].h_basic(o, width)].mycount();
-		int current;
+	public long query(Object o) {
+		long min = c_morris[0][h[0].h_basic(o, width)].mycount();
+		long current;
 		
 		for (int j=1; j < depth ; j++) {
 			current = c_morris[j][h[j].h_basic(o, width)].mycount();
