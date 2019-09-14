@@ -1,4 +1,11 @@
-#### Space consumption when w=d=0.01
+#### Space consumption when w=0.01, d=0.001
+#,Name,totalSpace
+#,CMS_Morris,200Morris=1624B,byte=1B,7*200*byte,classloader=178B,resolved_references=32B
+#,CMS_Default,long[200]=1624,7*long[200],classloader=178B
+#,CMS_Conservative,int[200]=824B,7*int[200],classloader=178B
+if switch CMS_Default int to Integer: 1624B
+
+#### Space consumption when w=0.01, d=0.01
 #,Name,totalSpace
 #,CMS_Morris,200Morris=1624B,byte=1B,7*200*byte,classloader=178B,resolved_references=32B
 #,CMS_Default,long[200]=1624,7*long[200],classloader=178B

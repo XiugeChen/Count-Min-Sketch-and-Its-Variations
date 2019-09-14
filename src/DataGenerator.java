@@ -15,21 +15,21 @@ import org.apache.commons.math3.distribution.ZipfDistribution;
 
 public class DataGenerator {
 	private static String DIC_PATH = "resources/data/";
-	private static int STREAM_LEN = (int) Math.pow(10, 4);
+	private static int STREAM_LEN = (int) Math.pow(10, 8);
 	
 	public static void main(String[] args) {
 		System.out.println("Initialization started");
 		// initialization
 		DataGenerator dataGenerator = new DataGenerator();
-		double[] zipfS = {0.4, 0.8, 1.2};
+		double[] zipfS = {0.4, 0.8, 1.2, 1.6};
 		
 		ArrayList<Double> normalStd = new ArrayList<>();
-		for (int i = 4; i < 9; i += 2) {
+		for (int i = 4; i < 9; i += 4) {
 			normalStd.add(Math.pow(10, i));
 		}
 		
 		ArrayList<Integer> uniqueNumItems = new ArrayList<>();
-		for (int i = 4; i < 9; i += 2) {
+		for (int i = 4; i < 9; i += 4) {
 			uniqueNumItems.add((int) Math.pow(10, i));
 		}
 		

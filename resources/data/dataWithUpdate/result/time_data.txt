@@ -1,5 +1,12 @@
+e=0.01, d=0.001
 Time in nanoseconds (1000 times run on space_time_test.txt, constant 100 length)
 sketch,query,update
+CMS_conservative,842.3859242424236,1524.3025657999997
+CMS_default,925.550449494951,805.1073648999986
+CMS_Morris,1865.8106010100996,75538.77696419999
+
+e=0.01 d=0.01
+Time in nanoseconds (1000 times run on space_time_test.txt, constant 100 length)
 CMS_conservative,220.34498585858603,339.01537339999976
 CMS_default,212.4342262626262,201.8307765000003
 CMS_Morris,411.19233636363674,13254.74496060002

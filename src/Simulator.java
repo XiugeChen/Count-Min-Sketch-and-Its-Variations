@@ -12,14 +12,14 @@ import java.util.stream.Stream;
 
 public class Simulator {
 	private static final String FOLDER = "resources/data/dataWithUpdate/";
-	private static final String FILE_PATH = "resources/data/dataWithUpdate/constant_max100-zipf_s0.6_len1000.txt";
+	private static final String FILE_PATH = "resources/data/dataWithUpdate/space_time_test.txt";
 	private static final double ERROR = 0.01;
 	private static final double BAD_PROB = 0.001;
 	
 	public static void main(String[] args) {
 		// initialization
 		int w = (int) Math.round(2.0 / ERROR);
-		int d = (int) Math.round(Math.log(1.0 / BAD_PROB) / Math.log(2));
+		int d = (int) Math.round(Math.log(1.0 / BAD_PROB) / Math.log(2) + Math.log(Integer.MAX_VALUE) / Math.log(2));
 		
 		// loop through all files
 		try (Stream<Path> walk = Files.walk(Paths.get(FOLDER))) {
@@ -38,8 +38,10 @@ public class Simulator {
 			e.printStackTrace();
 		}
 		
+		System.out.println("Simulation ends");
+		
 		/*
-		// run specific cms to measure the space and time
+		// run specific cms to measure the time
 		double[] time = {0.0, 0.0};
 		double[] total_time = {0.0, 0.0};
 		//CMS cms = new CMS_conservative(d, w);
@@ -52,6 +54,16 @@ public class Simulator {
 		}
 		System.out.println("####INFO: Query time: " + (double) total_time[0] / 1000);
 		System.out.println("####INFO: Update time: " + (double) total_time[1] / 1000);
+		*/
+		/*
+		// run specific cms to measure the space
+		double[] time = {0.0, 0.0};
+		CMS cms = new CMS_conservative(d, w);
+		//CMS cms = new CMS_default(d, w);
+		//CMS cms = new CMS_Morris(d, w);
+		time = runOne(cms, w, d);
+		
+		while (true) {}
 		*/
 	}
 	

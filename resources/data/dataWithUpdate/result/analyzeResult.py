@@ -79,10 +79,15 @@ only_files = [f for f in listdir(SOURCE_FOLDER) if isfile(SOURCE_FOLDER + f) and
 
 fp = open(WRITE_FILE, "a")
 
+print("####INFO: Start analyze")
+
 for file in only_files:
     if "data" in file:
         continue
-
+    
+    print("####INFO: analyze file:", file)
     read_file = SOURCE_FOLDER + file
     fp.write("####file,"+file+"\n")
     analyze(file, fp)
+    
+print("####INFO: Finish analyze")
