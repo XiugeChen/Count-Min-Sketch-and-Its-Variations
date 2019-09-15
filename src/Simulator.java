@@ -27,9 +27,11 @@ public class Simulator {
 					.filter(f -> f.endsWith(".txt"))
 					.filter(f -> !f.contains("result"))
 					.filter(f -> !f.contains("test"))
+					.filter(f -> !f.contains("88888"))
 					.collect(Collectors.toList());
 
 			for (String file: result) {
+				System.out.println(file);
 				// run all of three cms to measure the performance
 				runAll(file, w, d);
 			}

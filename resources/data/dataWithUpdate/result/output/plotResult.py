@@ -7,8 +7,8 @@ File = "./output.txt"
 
 # Zipf
 ROW = 8
-COL = 7
-X = [3,4,5,6,7,8,9]
+COL = 5
+X = [3,4,5,6,7]
 
 def draw(dataType):
     fp = open(File, "r")
@@ -64,31 +64,40 @@ def draw(dataType):
             default_percentile_data[i][j] = float(data[2].split(':')[1])
             morris_percentile_data[i][j] = float(data[3].split(':')[1])
         elif "uniqueNum" in line:
-            print(file, line)
+            print(file.rstrip(), line.rstrip())
             
     # start drawing
     plot(default_weighted_mean_data, 1)
     #plt.legend(loc='upper right')
-    plot(default_median_data, 2)
-    plot(default_percentile_data, 3)
-    plot(conser_weighted_mean_data, 4)
-    plot(conser_median_data, 5)
-    plot(conser_percentile_data, 6)
-    plot(morris_weighted_mean_data, 7)
-    plot(morris_median_data, 8)
-    plot(morris_percentile_data, 9)
+    plot(conser_weighted_mean_data, 2, eliminate16=True)
+    plot(morris_weighted_mean_data, 3, eliminate16=True)
+    plot(default_percentile_data, 4)
+    plot(conser_percentile_data, 5, eliminate16=True)
+    plot(morris_percentile_data, 6, eliminate16=True)
+    
+    #plot(default_median_data, 2)
+    #plot(conser_median_data, 5)
+    #plot(morris_median_data, 8)
+    
     plt.show()
     
-def plot(data, index):
-    plt.subplot(3, 3, index)
-    df = pd.DataFrame({'x':X, 'zpif-s0.4':data[0], 'zpif-s0.8':data[1], 'zpif-s1.2':data[2],
-        'zpif-s1.6':data[3], 'normal-std10^4':data[4], 'normal-std10^8':data[5],
-        'uniform-#10^4':data[6], 'uniform-#10^8':data[7] })
+def plot(data, index, eliminate16=False):
+    plt.subplot(2, 3, index)
+    
+    if eliminate16:
+        df = pd.DataFrame({'x':X, 'zpif-s0.4':data[0], 'zpif-s0.8':data[1], 'zpif-s1.2':data[2],
+            'normal-std10^4':data[4], 'normal-std10^8':data[5],
+            'uniform-#10^4':data[6], 'uniform-#10^8':data[7] })
+    else:
+        df = pd.DataFrame({'x':X, 'zpif-s0.4':data[0], 'zpif-s0.8':data[1], 'zpif-s1.2':data[2],
+            'zpif-s1.6':data[3], 'normal-std10^4':data[4], 'normal-std10^8':data[5],
+            'uniform-#10^4':data[6], 'uniform-#10^8':data[7] })
     
     plt.plot('x', 'zpif-s0.4', data=df, marker='', color='#F4F597', linewidth=1)
     plt.plot('x', 'zpif-s0.8', data=df, marker='', color='#7B7B17', linewidth=1)
     plt.plot('x', 'zpif-s1.2', data=df, marker='', color='#E904FC', linewidth=1)
-    plt.plot('x', 'zpif-s1.6', data=df, marker='', color='#FC2204', linewidth=1)
+    if not eliminate16:
+        plt.plot('x', 'zpif-s1.6', data=df, marker='', color='#FC2204', linewidth=1)
     plt.plot('x', 'normal-std10^4', data=df, marker='', color='#CAFB8C', linewidth=1)
     plt.plot('x', 'normal-std10^8', data=df, marker='', color='#03FA08', linewidth=1)
     plt.plot('x', 'uniform-#10^4', data=df, marker='', color='#8CFBFB', linewidth=1)

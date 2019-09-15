@@ -5,7 +5,7 @@ from os.path import isfile, join
 SOURCE_FOLDER = "./"
 SOURCE_FILE = "./constant_max100-zipf_s0.6_len1000_runningResult_error0.01_badprob0.001.txt"
 WRITE_FILE = "./output/output.txt"
-PERCENTILE_E = 1 - 0.001
+PERCENTILE_E = 100 - 0.1
 
 def analyze(file, w_fp):
     read_fp = open(file, "r")

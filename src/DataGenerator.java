@@ -15,7 +15,7 @@ import org.apache.commons.math3.distribution.ZipfDistribution;
 
 public class DataGenerator {
 	private static String DIC_PATH = "resources/data/";
-	private static int STREAM_LEN = (int) Math.pow(10, 8);
+	private static int STREAM_LEN = (int) Math.pow(10, 7);
 	
 	public static void main(String[] args) {
 		System.out.println("Initialization started");
